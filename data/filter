@@ -1,0 +1,5 @@
+Wireshark filters
+-----------------
+
+(a) Not so frequent DOCSIS Management messages
+docsis_mgmt and !(docsis_map) and !(docsis_sync) and !(docsis_type29ucd)

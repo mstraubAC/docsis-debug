@@ -238,11 +238,9 @@ int main(int argc, char** argv) {
 	cout << "DOCSIS transport stream parser" << endl;
 
 	const string fileName = "../docsis-debug/data/test.m2ts";
-
-	struct stat statBuf;
-	if (stat(fileName.c_str(), &statBuf) != 0) {
-		return 1;
-	}
+//	if (stat(fileName.c_str(), &statBuf) != 0) {
+//		return 1;
+//	}
 
 	boost::iostreams::mapped_file_source fFile;
 	fFile.close();
@@ -253,6 +251,7 @@ int main(int argc, char** argv) {
 
 	// search for sync byte
 	packet::PDU rawDocsis;
+	
 	size_t nPackets = 0;	
 	for (size_t i = 0; i < fFile.size(); ) {
 		uint32_t a = ntohl(*(const uint32_t*)(fFile.data() + i));
@@ -304,6 +303,7 @@ int main(int argc, char** argv) {
 			// done do pointer arithmetics and bookkeeping;
 //			if (nPackets > 30) break;
 			i += MPEG_TS_FRAME_LEN;
+
 			nPackets++;
 			continue;
 		}

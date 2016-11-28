@@ -97,6 +97,54 @@ struct mpegTransportStream : public packet {
 	}
 };
 
+#define DOCSIS_SYNC 1 /* timing syncrhonization */
+#define DOCSIS_MAP 3 /* upstream bandwidth allocation */
+#define DOCSIS_RNG_REQ 4 /* ranging request */
+#define DOCSIS_RNG_RSP 5 /* ranging response */
+#define DOCSIS_REG_REQ 6 /* registration request */
+#define DOCSIS_REG_RSP 7 /* registration response */
+#define DOCSIS_UCC_REQ 8 /* upstream channel change request */
+#define DOCSIS_UCC_RSP 9 /* upstream channel change response */
+//
+//
+#define DOCSIS_BPKM_REQ 12 /* privacy key management request (DOCSIS SEC v3.0) */
+#define DOCSIS_BPKM_RSP 13 /* privacy key management response (DOCSIS SEC v3.0) */
+#define DOCSIS_REG_ACK 14 /* registration acknowledge */
+#define DOCSIS_DSA_REQ 15 /* dynamic service addition request */
+#define DOCSIS_DSA_RSP 16 /* dynamic service addition reponses */
+#define DOCSIS_DSA_ACK 17 /* dynamic service addition acknowledge */
+#define DOCSIS_DSC_REQ 18 /* dynamic service change request */
+#define DOCSIS_DSC_RSP 19 /* dynamic service change response */
+#define DOCSIS_DSC_ACK 20 /* dynamic service change acknowledge */
+#define DOCSIS_DSD_REQ 21 /* dynamic service deletion request */
+#define DOCSIS_DSD_RSP 22 /* dynamic service deletion response */
+#define DOCSIS_DSD_ACK 23 /* dynamic service delection acknowledge */
+#define DOCSIS_DCC_REQ 23 /* dynamic channel change request */
+#define DOCSIS_DCC_RSP 24 /* dynamic channel change response */
+#define DOCSIS_DCC_ACK 25 /* dynamic channel change acknowledge */
+#define DOCSIS_DCI_REQ 26 /* device class identification request */
+#define DOCSIS_DCI_RSP 27 /* device class identification response */
+#define DOCSIS_UP_DIS 28 /* upstream transmitter disable */
+//
+#define DOCSIS_INIT_RNG_REQ 30 /* initial ranging request */
+#define DOCSIS_TST_REQ 31 /* Test request message */
+#define DOCSIS_DCD 32 /* downstream channel descriptor */
+#define DOCSIS_MDD 33 /* MAC Domain Descriptor */
+#define DOCSIS_B_INIT_RNG_REQ 34 /* Bonded initial Ranging Request */
+//
+#define DOCSIS_DBC_REQ 36 /* Dynamic Bonding Change Request */
+#define DOCSIS_DBC_RSP 37 /* Dynamic Bonding Change Resposne */
+#define DOCSIS_DBC_ACK 38 /* Dynamic Bonding Change Acknowledge */
+#define DOCSIS_DPV_REQ 39 /* DOCSIS Path Verify Request */
+#define DOCSIS_DPV_RSP 40 /* DOCSIS Path Verify Response */
+#define DOCSIS_CM_STATUS 41 /* Status Report */
+#define DOCSIS_CM_CTRL_REQ 42 /* CM Control */
+#define DOCSIS_CM_CTRL_RSP 43 /* CM Control Response */
+#define DOCSIS_REG_REQ_MP 44 /* Multipart Registration Request */
+#define DOCSIS_REG_RSP_MP 45 /* Multipart Registration Response */
+#define DOCSIS_EM_REQ 46 /* Energy Management Request */
+#define DOCSIS_EM_RSP 47 /* Energy Management Response */
+#define DOCSIS_CM_STATUS_ACK 48 /* Status Report Acknowledge */
 struct docsisPacket : public packet {
 	/**
 	 *  identifies the type of MAC header

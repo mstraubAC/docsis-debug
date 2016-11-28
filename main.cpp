@@ -205,14 +205,14 @@ struct docsisPacket : public packet {
 		if (fPdu.size() < 13) {
 			throw out_of_range("docsisPacket::parseDataPdu(): the extracted PDU is smaller than the header!");
 		}
-		dst_addr =
+		dst_addr = 0 |
 				(uint64_t(fPdu[0]) << 40) |
 				(uint64_t(fPdu[1]) << 32) |
 				(uint64_t(fPdu[2]) << 24) |
 				(uint64_t(fPdu[3]) << 16) |
 				(uint64_t(fPdu[4]) << 8) |
 				uint64_t(fPdu[5]);
-		src_addr =
+		src_addr = 0 |
 				(uint64_t(fPdu[6]) << 40) |
 				(uint64_t(fPdu[7]) << 32) |
 				(uint64_t(fPdu[8]) << 24) |
@@ -221,7 +221,54 @@ struct docsisPacket : public packet {
 				uint64_t(fPdu[11]);
 
 		data_len_type = ntohs(*(const uint16_t*)(fPdu.data() + 12));
-		cout << hex << src_addr << " | " << dst_addr << " | Len/Type=" << dec << data_len_type << " (" << hex << data_len_type << ")" << endl;
+		cout << "src=0x" << hex << src_addr << " | dst=0x" << dst_addr << " | Len/Type=" << dec << data_len_type << " (0x" << hex << data_len_type << ")" << endl;
+	}
+
+	void parseMacMgmtPdu() {
+		if (fPdu.size() < 13) {
+			throw out_of_range("docsisPacket::parseMacMgmtPdu(): the extracted PDU is smaller than the header!");
+		}
+		dst_addr = 0 |
+				(uint64_t(fPdu[0]) << 40) |
+				(uint64_t(fPdu[1]) << 32) |
+				(uint64_t(fPdu[2]) << 24) |
+				(uint64_t(fPdu[3]) << 16) |
+				(uint64_t(fPdu[4]) << 8) |
+				uint64_t(fPdu[5]);
+		src_addr = 0 |
+				(uint64_t(fPdu[6]) << 40) |
+				(uint64_t(fPdu[7]) << 32) |
+				(uint64_t(fPdu[8]) << 24) |
+				(uint64_t(fPdu[9]) << 16) |
+				(uint64_t(fPdu[10]) << 8) |
+				uint64_t(fPdu[11]);
+
+		data_len_type = ntohs(*(const uint16_t*)(fPdu.data() + 12));
+
+		uint8_t dsap = *(fPdu.data()+14);
+		uint8_t ssap = *(fPdu.data()+15);
+		uint8_t control = *(fPdu.data()+16);
+		uint8_t version = *(fPdu.data()+17);
+		uint8_t type = *(fPdu.data()+18);
+		uint8_t rsvd = *(fPdu.data()+19);
+
+		if (dsap != 0) {
+			throw out_of_range("docsisPacket::parseMacMgmtPdu(): DSAP value of non zero violates specification");
+		}
+
+		if ( !((type == DOCSIS_RNG_REQ) || (type == DOCSIS_INIT_RNG_REQ) || (type == DOCSIS_B_INIT_RNG_REQ) ) && (ssap != 0)) {
+			throw out_of_range("docsisPacket::parseMacMgmtPdu(): SSAP value of non zero violates specification");
+		}
+
+
+		cout << "MAC MGMT PDU: src=0x" << hex << src_addr << " | dst=0x" << dst_addr << " | Len/Type=" << dec << data_len_type << " (0x" << hex << data_len_type << "): " <<
+				"DSAP=0x" << hex << uint32_t(dsap) << ", " <<
+				"SSAP=0x" << uint32_t(ssap) << ", " <<
+				"control=0x" << uint32_t(control) << ", " <<
+				"version=0x" << uint32_t(version) << ", " <<
+				"type=0x" << uint32_t(type) << ", " <<
+				"rsvd=0x" << uint32_t(rsvd) << ", " <<
+				endl;
 	}
 
 	docsisPacket(const packet::PDU& in)
@@ -266,17 +313,18 @@ struct docsisPacket : public packet {
 		switch (fc.decoded.type) {
 			case 0:
 //				cout << "DATA PDU" << endl;
-				parseDataPdu();
+//				parseDataPdu();
 				break;
 			case 1:
 //				cout << "ATM PDU" << endl;
 				break;
 			case 2:
 //				cout << "Isolation Packet PDU MAC Header" << endl;
-				parseDataPdu();
+//				parseDataPdu();
 				break;
 			case 3:
 //				cout << "MAC Specific Header";
+				parseMacMgmtPdu();
 				break;
 		}
 	}

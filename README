@@ -1,1 +1,6 @@
 Simple docsis parser giving information about the MACs on the segment as well as CMTS informations
+
+Get example data via
+
+dvbtune -f 698000000 -s 6952 -qam 256
+dvbsnoop -adapter 0 -s ts 8190 -b > /tmp/docsis.ts
